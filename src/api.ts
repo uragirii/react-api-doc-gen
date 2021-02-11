@@ -7,6 +7,9 @@ export const API_Collection: Collection = {
       description:
         "We use OAuth 2.0 for authenticating all our requests. First get the token using your `client_id` and `client_secret`. You can get your `client_id` and `client_secret` from 'Account Settings' in Developer Solvio",
       method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
       body: {
         client_id: {
           type: "string",

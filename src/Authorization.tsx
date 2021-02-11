@@ -1,34 +1,91 @@
-import { Authorization as IAuthorization, Request as IRequest } from "./types";
+import { Authorization as IAuthorization, Request } from "./types";
 import { RequestBody } from "./RequestBody";
+import { ResponseBody } from "./ResponseBody";
 import { CopyBlock, dracula } from "react-code-blocks";
 
 interface AuthorizationProps {
   authorization: IAuthorization;
 }
 
-const jsCode = (api: string, method: IRequest["method"]) => {
+const jsCode = (request: Request) => {
+  const { url, body, headers: prevHeaders, method } = request;
+  if (typeof body === "string" || typeof body === "number" || body === null) {
+    return "Not Implemented";
+  }
+  const keys = Object.keys(body);
+  const payload = keys
+    .map((key) => {
+      return `${key} : ${
+        body[key].value ? `'${body[key].value}'` : `'<${body[key].title}>'`
+      },`;
+    })
+    .join("\n        ");
+  let headers: { [key: string]: string };
+  if (!prevHeaders) {
+    headers = {
+      "Content-Type": "application/json"
+    };
+  } else {
+    headers = prevHeaders;
+  }
+  const headerKeys = Object.keys(headers);
+  const headerCode = headerKeys
+    .map((key) => {
+      return `'${key}' : '${headers[key]}',`;
+    })
+    .join("\n");
   return `
-    fetch("${api}", {
+  fetch("${url}", {
       method: "${method}",
       headers : {
-        'Content-Type' : 'application/json'
+        ${headerCode}
+      },
+      body : {
+        ${payload}
       }
-    })
+    }).then(res => console.log(res.json()))
   `;
 };
 
-const pythonCode = (url: string) => {
+const pythonCode = (request: Request) => {
+  const { url, body, headers: prevHeaders, method } = request;
+  if (typeof body === "string" || typeof body === "number" || body === null) {
+    return "Not Implemented";
+  }
+  const keys = Object.keys(body);
+  const payload = keys
+    .map((key) => {
+      return `${key}=${
+        body[key].value ? body[key].value : `'<${body[key].title}>'`
+      }`;
+    })
+    .join("&");
+  let headers: { [key: string]: string };
+  if (!prevHeaders) {
+    headers = {
+      "Content-Type": "application/json"
+    };
+  } else {
+    headers = prevHeaders;
+  }
+  const headerKeys = Object.keys(headers);
+  const headerCode = headerKeys
+    .map((key) => {
+      return `'${key}' : '${headers[key]}',`;
+    })
+    .join("\n");
+
   return `
 import requests
 
 url = "${url}"
 
-payload='grant_type=client_credentials&client_id=solvio&client_secret=499e8e0c-3200-4314-9a4b-aea90299584d'
+payload="${payload}"
 headers = {
-  'Content-Type': 'application/x-www-form-urlencoded',
+  ${headerCode}
 }
 
-response = requests.request("POST", url, headers=headers, data=payload)
+response = requests.request("${method}", url, headers=headers, data=payload)
 
 print(response.text)
 `;
@@ -52,6 +109,12 @@ export const Authorization = ({ authorization }: AuthorizationProps) => {
             <code>{authorization.request.url}</code>
           </div>
           <RequestBody body={authorization.request.body} />
+          <div style={{ fontWeight: "bold", marginTop: "1.5em" }}>Response</div>
+          {authorization.request.responses.map((response) => {
+            return (
+              <ResponseBody response={response} key={response.statusCode} />
+            );
+          })}
         </div>
         <div
           style={{
@@ -63,7 +126,7 @@ export const Authorization = ({ authorization }: AuthorizationProps) => {
           }}
         >
           <CopyBlock
-            text={pythonCode(authorization.request.url)}
+            text={pythonCode(authorization.request)}
             language={"python"}
             showLineNumbers={false}
             theme={dracula}

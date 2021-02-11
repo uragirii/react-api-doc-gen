@@ -1,7 +1,7 @@
 {
-  "name": "api-documentation-generator",
+  "name": "react-api-docs-generation",
   "version": "1.0.0",
-  "description": "",
+  "description": "A automatic parser for generating react documentation",
   "keywords": [],
   "main": "src/index.tsx",
   "dependencies": {

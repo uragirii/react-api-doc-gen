@@ -34,7 +34,7 @@ export interface Request {
    *
    * Authorization headers will be automatically added
    */
-  headers?: Array<{ [key: string]: string }>;
+  headers?: { [key: string]: string };
   method: "GET" | "POST" | "PUT" | "DELETE";
   body: number | string | { [key: string]: Schema };
   /**
