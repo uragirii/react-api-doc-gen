@@ -2,6 +2,7 @@ import { Authorization as IAuthorization, Request } from "./types";
 import { RequestBody } from "./RequestBody";
 import { ResponseBody } from "./ResponseBody";
 import { CopyBlock, dracula } from "react-code-blocks";
+import { RequestJsonView, ResponseJsonView } from "./JsonView";
 
 interface AuthorizationProps {
   authorization: IAuthorization;
@@ -125,6 +126,40 @@ export const Authorization = ({ authorization }: AuthorizationProps) => {
             fontFamily: "Consolas"
           }}
         >
+          <div style={{ marginBottom: "1.5em" }}>
+            <div
+              style={{
+                marginBottom: "0.5em",
+                fontWeight: "bold",
+                marginTop: "0.5em",
+                marginLeft: "0.5em"
+              }}
+            >
+              Request JSON
+            </div>
+            <RequestJsonView body={authorization.request.body} />
+            <div
+              style={{
+                marginBottom: "0.5em",
+                fontWeight: "bold",
+                marginTop: "0.5em",
+                marginLeft: "0.5em"
+              }}
+            >
+              Response JSON
+            </div>
+            <ResponseJsonView body={authorization.request.responses[0].body} />
+          </div>
+          <div
+            style={{
+              marginBottom: "0.5em",
+              fontWeight: "bold",
+              marginTop: "0.5em",
+              marginLeft: "0.5em"
+            }}
+          >
+            Code
+          </div>
           <CopyBlock
             text={pythonCode(authorization.request)}
             language={"python"}
