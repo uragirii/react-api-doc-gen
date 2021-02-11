@@ -1,5 +1,6 @@
 import { Collection as ICollection } from "./types";
 import { Authorization } from "./Authorization";
+import { Request } from "./Request";
 
 export interface CollectionProps {
   collection: ICollection;
@@ -20,6 +21,15 @@ export const Collection = ({ collection }: CollectionProps) => {
         </code>
       </div>
       <Authorization authorization={collection.auth} />
+      {collection.requests.map((r) => {
+        return (
+          <Request
+            request={r}
+            key={r.url + r.method}
+            mainURL={collection.baseURL}
+          />
+        );
+      })}
     </div>
   );
 };

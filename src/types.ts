@@ -1,6 +1,6 @@
 export interface Authorization {
   type: "bearer" | "none";
-  request: Request;
+  request?: Request;
 }
 
 export interface Schema {

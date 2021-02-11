@@ -1,2 +1,1 @@
-# react-api-doc-gen
-Created with CodeSandbox
+# React API Documentation Generator
