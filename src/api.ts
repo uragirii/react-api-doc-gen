@@ -128,10 +128,196 @@ export const API_Collection: Collection = {
           }
         }
       ],
-      url: "text/digital",
+      url: "/text/digital",
       title: "Text OCR (Digital)",
       description: "Digital version of Text OCR"
+    },
+    {
+      method: "POST",
+      body: {
+        function: {
+          type: "string",
+          truncate: false,
+          required: false,
+          title: "Function",
+          description:
+            "The function expected. Default value is empty string('')."
+        },
+        src: {
+          type: "string",
+          truncate: true,
+          truncateLength: 22,
+          required: true,
+          title: "Base64 Image",
+          description:
+            "The image that needs to be processed in base64 encoded format"
+        },
+        scaleX: {
+          type: "number",
+          truncate: false,
+          required: false,
+          title: "Scale X",
+          description: "The scale of image in X direction"
+        },
+        scaleY: {
+          type: "number",
+          truncate: false,
+          required: false,
+          title: "Scale Y",
+          description: "The scale of image in Y direction"
+        },
+        classificationType: {
+          type: "string",
+          truncate: false,
+          required: false,
+          title: "Classification Type",
+          description:
+            "The classification type. Default value is empty string('')"
+        }
+      },
+      responses: [
+        {
+          statusCode: 200,
+          body: {
+            graphCharacterstics: {
+              type: "object",
+              truncate: false,
+              required: false,
+              title: "Graph Characterstics",
+              description: "Characterstics of the graph sent",
+              children: {
+                blank: {
+                  type: "boolean",
+                  truncate: false,
+                  required: false,
+                  title: "Blank",
+                  description: "Whether the graph is blank"
+                },
+                grid: {
+                  type: "boolean",
+                  truncate: false,
+                  required: false,
+                  title: "Grid",
+                  description: "Whether the graph contains grid"
+                },
+                title: {
+                  type: "boolean",
+                  truncate: false,
+                  required: false,
+                  title: "Title",
+                  description: "Title of the graph"
+                },
+                xLabel: {
+                  type: "string",
+                  truncate: false,
+                  required: false,
+                  title: "X Label",
+                  description: "Label of X axis"
+                },
+                yLabel: {
+                  type: "string",
+                  truncate: false,
+                  required: false,
+                  title: "Y Label",
+                  description: "Label of Y axis"
+                },
+                scaleX: {
+                  type: "number",
+                  truncate: false,
+                  required: false,
+                  title: "Scale X",
+                  description: "Scale of Graph in X direction"
+                },
+                scaleY: {
+                  type: "number",
+                  truncate: false,
+                  required: false,
+                  title: "Scale Y",
+                  description: "Scale of Graph in Y direction"
+                },
+                handDrawn: {
+                  type: "boolean",
+                  truncate: false,
+                  required: false,
+                  title: "Hand Drawn",
+                  description: "Whether Graph is Handdrawn"
+                },
+                plotType: {
+                  type: "enum",
+                  truncate: false,
+                  required: false,
+                  title: "Plot Type",
+                  enum: ["SCATTER", "LINE_PLOT"],
+                  description: "Type of Plot"
+                }
+              }
+            },
+            functionCharacterstics: {
+              type: "object",
+              truncate: false,
+              required: false,
+              title: "Function Characterstics",
+              description: "Characterstics of the function detected",
+              children: {
+                function: {
+                  type: "enum",
+                  enum: ["LINE", "PARABOLA"],
+                  required: false,
+                  title: "Function",
+                  description: "Detected function"
+                },
+                xIntersection: {
+                  title: "X Intersection",
+                  type: "boolean",
+                  required: false,
+                  description: "Intersection on X axis"
+                },
+                yIntersection: {
+                  title: "Y Intersection",
+                  type: "boolean",
+                  required: false,
+                  description: "Intersection on Y axis"
+                },
+                quadrants: {
+                  title: "Quadrants",
+                  type: "array",
+                  required: false,
+                  description: "Array of quadrants in which function is present"
+                },
+                equation: {
+                  title: "Equation",
+                  type: "string",
+                  required: false,
+                  description: "Equation of the function"
+                },
+                points: {
+                  title: "Points",
+                  type: "array",
+                  required: false,
+                  description: "Array of points in {x:0, y:0} format"
+                },
+                coordinates: {
+                  title: "Coordinates",
+                  type: "array",
+                  required: false,
+                  description: "Array of coordinates in {x:0, y:0} format"
+                },
+                parameters: {
+                  title: "Parameters",
+                  type: "object",
+                  required: false,
+                  description: "Parameters of the function"
+                }
+              }
+            }
+          }
+        }
+      ],
+      url: "/graph/understanding",
+      title: "Graph Understanding",
+      description:
+        "Understands the graph and returns graph characterstics and the functions drawn in the graph"
     }
   ],
-  baseURL: "https://developer.trysolvio.ai/api/"
+  baseURL: "https://developer.trysolvio.ai/api"
 };

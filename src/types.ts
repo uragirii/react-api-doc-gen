@@ -4,24 +4,20 @@ export interface Authorization {
 }
 
 export interface Schema {
-  type: "string" | "number" | Schema | Schema[];
+  type: "string" | "number" | "boolean" | "object" | "array" | "enum";
   truncate?: boolean;
   truncateLength?: number;
   required: boolean;
   value?: any;
   description?: string;
   title: string;
+  enum?: string[];
+  children?: { [key: string]: Schema };
 }
 
 export interface Response {
   statusCode: number;
-  body:
-    | "string"
-    | "number"
-    | Schema
-    | Schema[]
-    | null
-    | { [key: string]: Schema };
+  body: "string" | "number" | "boolean" | { [key: string]: Schema };
 }
 
 export interface Request {
